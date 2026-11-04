@@ -22,6 +22,7 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
     throw new Error(`Could not reach the backend at ${API_URL}. Is it running?`)
   }
   if (!response.ok) throw new Error(await readError(response))
+  if (response.status === 204) return undefined as T // 204 No Content: nothing to read
   return response.json()
 }
 
@@ -38,4 +39,9 @@ export function createProject(project: ProjectInput) {
 // PUT /projects/{id}
 export function updateProject(id: number, project: ProjectInput) {
   return request<Project>(`/projects/${id}`, { method: 'PUT', body: JSON.stringify(project) })
+}
+
+// DELETE /projects/{id}
+export function deleteProject(id: number) {
+  return request<void>(`/projects/${id}`, { method: 'DELETE' })
 }

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
-import { createProject, getProjects, updateProject } from './api'
+import { createProject, deleteProject, getProjects, updateProject } from './api'
 import type { Project } from './api'
 import './App.css'
 
@@ -15,21 +15,24 @@ function styleFor(project: Project) {
   return cardStyles[project.category] ?? { symbol: '✦', color: fallbackColors[project.id % fallbackColors.length] }
 }
 
-function ProjectCard({ project, saved, onToggleSave, onEdit }: { project: Project; saved: boolean; onToggleSave: (id: number) => void; onEdit: (project: Project) => void }) {
+type CardActions = { onToggleSave: (id: number) => void; onEdit: (project: Project) => void; onDelete: (project: Project) => void }
+
+function ProjectCard({ project, saved, onToggleSave, onEdit, onDelete }: { project: Project; saved: boolean } & CardActions) {
   const { symbol, color } = styleFor(project)
   return <article className="project-card">
     <div className={`project-art ${color}`} aria-hidden="true"><span>{symbol}</span><small>{project.category}</small></div>
     <div className="card-body"><p className="eyebrow">{project.category}</p><h3>{project.title}</h3><p className="description">{project.description}</p>
       <ul className="tags" aria-label={`${project.title} topics`}>{project.tags.map(tag => <li key={tag}>{tag}</li>)}</ul>
-      <div className="card-actions">{project.link ? <a href={project.link} target="_blank" rel="noreferrer">View code ↗</a> : <span>{project.category === 'Robotics' ? 'Team experience' : 'Learning in progress'}</span>}
+      <div className="card-actions">{project.link ? <a href={project.link} target="_blank" rel="noreferrer">View code ↗</a> : <span>No public link</span>}
         <div><button type="button" aria-label={`Edit ${project.title}`} onClick={() => onEdit(project)}>Edit</button>
+          <button type="button" aria-label={`Delete ${project.title}`} onClick={() => onDelete(project)}>Delete</button>
           <button type="button" className={saved ? 'saved' : ''} aria-pressed={saved} aria-label={`${saved ? 'Unsave' : 'Save'} ${project.title}`} onClick={() => onToggleSave(project.id)}>{saved ? '★ Saved' : '☆ Save'}</button></div>
       </div>
     </div>
   </article>
 }
-function ProjectGrid({ items, savedIds, onToggleSave, onEdit }: { items: Project[]; savedIds: number[]; onToggleSave: (id: number) => void; onEdit: (project: Project) => void }) {
-  return <div className="project-grid">{items.map(project => <ProjectCard key={project.id} project={project} saved={savedIds.includes(project.id)} onToggleSave={onToggleSave} onEdit={onEdit} />)}</div>
+function ProjectGrid({ items, savedIds, ...actions }: { items: Project[]; savedIds: number[] } & CardActions) {
+  return <div className="project-grid">{items.map(project => <ProjectCard key={project.id} project={project} saved={savedIds.includes(project.id)} {...actions} />)}</div>
 }
 
 // One form for both adding (POST) and editing (PUT) a project.
@@ -85,6 +88,7 @@ function App() {
   const [showSaved, setShowSaved] = useState(false)
   // null = form closed, 'new' = adding a project, a Project = editing that project
   const [formMode, setFormMode] = useState<null | 'new' | Project>(null)
+  const [actionError, setActionError] = useState('')
 
   function loadProjects() {
     getProjects()
@@ -101,6 +105,18 @@ function App() {
     setProjects(current => current.some(project => project.id === saved.id) ? current.map(project => project.id === saved.id ? saved : project) : [...current, saved])
     setFormMode(null)
   }
+  async function handleDelete(project: Project) {
+    if (!window.confirm(`Delete “${project.title}”? This can't be undone.`)) return
+    setActionError('')
+    try {
+      await deleteProject(project.id)
+      setProjects(current => current.filter(item => item.id !== project.id))
+      setSavedIds(current => current.filter(id => id !== project.id))
+      setFormMode(current => current !== null && current !== 'new' && current.id === project.id ? null : current)
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : 'Could not delete the project.')
+    }
+  }
   const visibleProjects = projects.filter(project => [project.title, project.category, project.description, ...project.tags].join(' ').toLowerCase().includes(query.trim().toLowerCase()) && (!showSaved || savedIds.includes(project.id)))
   return <>
     <a className="skip-link" href="#main">Skip to content</a>
@@ -115,7 +131,7 @@ function App() {
         {loading && <p className="load-message" role="status">Loading projects…</p>}
         {loadError && <div className="empty-state" role="alert"><h3>Projects are unavailable.</h3><p>{loadError}</p><button type="button" onClick={() => { setLoading(true); loadProjects() }}>Try again</button></div>}
         {!loading && !loadError && <>
-          <p className="sr-only" role="status">{visibleProjects.length} projects shown. {savedIds.length} saved.</p><ProjectGrid items={visibleProjects} savedIds={savedIds} onToggleSave={toggleSave} onEdit={setFormMode} />
+          <p className="sr-only" role="status">{visibleProjects.length} projects shown. {savedIds.length} saved.</p>{actionError && <p className="form-error action-error" role="alert">{actionError}</p>}<ProjectGrid items={visibleProjects} savedIds={savedIds} onToggleSave={toggleSave} onEdit={setFormMode} onDelete={handleDelete} />
           {visibleProjects.length === 0 && <div className="empty-state"><h3>{showSaved && savedIds.length === 0 ? 'Your collection starts here.' : 'No matching projects.'}</h3><p>{showSaved && savedIds.length === 0 ? 'Use the Save button on a project to keep it in this view.' : 'Try another search or reset the filters.'}</p><button type="button" onClick={() => { setQuery(''); setShowSaved(false) }}>Show all projects</button></div>}
         </>}
       </section>

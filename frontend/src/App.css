@@ -59,6 +59,8 @@ h3 { font-size: 19px; font-weight: 600; letter-spacing: -.5px; margin-bottom: 12
 .form-grid .wide { grid-column: 1 / -1; }
 .form-grid input, .form-grid textarea { border: 1px solid #deded6; border-radius: 6px; padding: 9px 11px; background: #faf9f6; color: #292b24; font: inherit; font-size: 13px; font-weight: 400; resize: vertical; }
 .form-error { color: #a23b2c; font-size: 12px; margin: 14px 0 0; }
+.action-error { margin: 0 0 16px; }
+.card-actions button[aria-label^="Delete"]:hover { color: #a23b2c; }
 .form-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
 .form-actions button[type="button"] { border: 1px solid #deded6; background: transparent; border-radius: 6px; padding: 10px 14px; font-size: 12px; }
 .load-message { color: #66675f; font-size: 14px; text-align: center; padding: 40px 0; }
