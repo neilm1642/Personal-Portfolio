@@ -83,3 +83,13 @@ def update_project(project_id: int, project_in: ProjectIn) -> Project:
             projects[index] = updated_project
             return updated_project
     raise HTTPException(status_code=404, detail=f"Project {project_id} not found")
+
+
+@app.delete("/projects/{project_id}", status_code=204)
+def delete_project(project_id: int) -> None:
+    """Remove a project. Returns 404 if it doesn't exist."""
+    for index, project in enumerate(projects):
+        if project.id == project_id:
+            projects.pop(index)
+            return
+    raise HTTPException(status_code=404, detail=f"Project {project_id} not found")
