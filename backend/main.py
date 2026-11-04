@@ -1,7 +1,16 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 app = FastAPI()
+
+# Allow the React dev server (Vite runs on port 5173) to call this API from the browser.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 # ---------- Pydantic models ----------
@@ -35,7 +44,7 @@ projects: list[Project] = [
         id=2,
         title="FTC Robotics",
         category="Robotics",
-        description="Collaborating on competition robots, solving design challenges, and learning through iteration.",
+        description="Collaborating on competition robots, solving design challenges, and learning through iteration. FTC World Championship winner, 2022–2023.",
         tags=["Engineering", "Teamwork", "Robotics"],
     ),
     Project(
