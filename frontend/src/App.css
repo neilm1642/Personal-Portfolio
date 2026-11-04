@@ -47,6 +47,21 @@ h3 { font-size: 19px; font-weight: 600; letter-spacing: -.5px; margin-bottom: 12
 .card-actions > span { color: #74766b; }
 .card-actions button { border: 0; background: transparent; color: #66675f; padding: 7px 4px; font-size: 11px; }
 .card-actions button.saved { color: #625a88; }
+.card-actions > div { display: flex; gap: 4px; }
+.toolbar-right { display: flex; gap: 10px; align-items: center; }
+.add-button, .form-actions .submit { border: 0; background: #292b24; color: #faf9f6; border-radius: 6px; padding: 11px 15px; font-size: 12px; white-space: nowrap; }
+.add-button:hover, .form-actions .submit:hover { background: #4a4d40; }
+.add-button:disabled, .form-actions .submit:disabled { opacity: .5; cursor: default; }
+.project-form { border: 1px solid #deded6; border-radius: 10px; background: #fffefa; padding: 24px; margin-bottom: 26px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.form-grid label { display: flex; flex-direction: column; gap: 6px; font-size: 11px; font-weight: 600; color: #4a4b44; }
+.form-grid label small { font-weight: 400; color: #77786f; }
+.form-grid .wide { grid-column: 1 / -1; }
+.form-grid input, .form-grid textarea { border: 1px solid #deded6; border-radius: 6px; padding: 9px 11px; background: #faf9f6; color: #292b24; font: inherit; font-size: 13px; font-weight: 400; resize: vertical; }
+.form-error { color: #a23b2c; font-size: 12px; margin: 14px 0 0; }
+.form-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
+.form-actions button[type="button"] { border: 1px solid #deded6; background: transparent; border-radius: 6px; padding: 10px 14px; font-size: 12px; }
+.load-message { color: #66675f; font-size: 14px; text-align: center; padding: 40px 0; }
 .empty-state { text-align: center; padding: 55px 20px; border: 1px dashed #c9c8be; border-radius: 10px; }
 .empty-state p { color: #66675f; font-size: 14px; }
 .empty-state button { border: 1px solid #c9c8be; background: #eeede7; padding: 10px 15px; border-radius: 6px; }
@@ -65,7 +80,9 @@ h3 { font-size: 19px; font-weight: 600; letter-spacing: -.5px; margin-bottom: 12
   .project-grid { grid-template-columns: 1fr; }
   .project-art { height: 200px; }
   .project-toolbar { flex-wrap: wrap; }
-  .search-field { width: 100%; }
+  .toolbar-right { width: 100%; }
+  .search-field { flex: 1; }
+  .form-grid { grid-template-columns: 1fr; }
   .search-field input { width: 100%; min-width: 0; }
   .section-number { display: none; }
   nav { gap: 18px; font-size: 12px; }
