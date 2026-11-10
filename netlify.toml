@@ -1,0 +1,5 @@
+# Netlify deploys only the React frontend (the FastAPI backend is for local development).
+[build]
+  base = "frontend"
+  command = "bun run build"
+  publish = "dist"

@@ -1,0 +1,6 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    { "name": "portfolio-prod-preview", "runtimeExecutable": "bun", "runtimeArgs": ["run", "--cwd", "frontend", "preview", "--port", "4173"], "port": 4173 }
+  ]
+}

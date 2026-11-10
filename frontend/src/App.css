@@ -73,7 +73,31 @@ h3 { font-size: 19px; font-weight: 600; letter-spacing: -.5px; margin-bottom: 12
 .site-footer .wordmark { font-size: 23px; color: #292b24; }
 .skip-link { position: absolute; top: -100px; padding: 12px; background: #292b24; color: white; z-index: 2; }
 .skip-link:focus { top: 10px; }
+html { scroll-padding-top: 20px; }
+.experience-section { padding: 58px 0; border-bottom: 1px solid #deded6; }
+.timeline { list-style: none; padding: 0; margin: 10px 0 0; }
+.timeline > li { display: grid; grid-template-columns: 170px 1fr; gap: 30px; padding: 22px 0; border-top: 1px solid #eeede7; }
+.timeline > li:first-child { border-top: 0; }
+.timeline-dates { font: 11px ui-monospace, monospace; color: #77786f; padding-top: 5px; }
+.timeline h3 { margin-bottom: 4px; }
+.timeline-org { color: #625caa; font-size: 13px; margin-bottom: 10px; }
+.timeline ul { padding-left: 18px; color: #66675f; font-size: 13px; }
+.timeline ul li { margin-bottom: 6px; }
+.details-section { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; padding: 58px 0; border-top: 1px solid #deded6; }
+.honors { list-style: none; padding: 0; font-size: 13px; color: #4a4b44; }
+.honors li { padding: 9px 0; border-bottom: 1px solid #eeede7; }
+.skills > div { display: grid; grid-template-columns: 90px 1fr; gap: 12px; padding: 8px 0; align-items: start; }
+.skills dt { font-size: 12px; font-weight: 600; padding-top: 3px; }
+.skills dd { margin: 0; }
+.skills .tags { margin: 0; }
+.skills .tags li { font-size: 11px; }
+.contact-links { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.secondary-link { display: inline-flex; padding: 12px 18px; border: 1px solid #c9c8be; font-size: 13px; border-radius: 6px; }
+.secondary-link:hover { background: #eeede7; }
 @media (max-width: 760px) {
+  .timeline > li { grid-template-columns: 1fr; gap: 6px; }
+  .details-section { grid-template-columns: 1fr; gap: 30px; padding: 42px 0; }
+  .experience-section { padding: 42px 0; }
   #root { padding: 0 24px; }
   .hero { padding-top: 58px; }
   h1 { letter-spacing: -2px; }

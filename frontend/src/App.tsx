@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
-import { createProject, deleteProject, getProjects, updateProject } from './api'
+import { API_ENABLED, createProject, deleteProject, getProjects, updateProject } from './api'
+import { contact, experience, honors, skills } from './resume'
 import type { Project } from './api'
 import './App.css'
 
@@ -9,6 +10,8 @@ const cardStyles: Record<string, { symbol: string; color: string }> = {
   'Web development': { symbol: '</>', color: 'lavender' },
   Robotics: { symbol: '⚙', color: 'peach' },
   'Computer science': { symbol: '{ }', color: 'sage' },
+  'Machine learning': { symbol: '∿', color: 'sage' },
+  Aerospace: { symbol: '✈', color: 'lavender' },
 }
 const fallbackColors = ['lavender', 'peach', 'sage']
 function styleFor(project: Project) {
@@ -23,9 +26,9 @@ function ProjectCard({ project, saved, onToggleSave, onEdit, onDelete }: { proje
     <div className={`project-art ${color}`} aria-hidden="true"><span>{symbol}</span><small>{project.category}</small></div>
     <div className="card-body"><p className="eyebrow">{project.category}</p><h3>{project.title}</h3><p className="description">{project.description}</p>
       <ul className="tags" aria-label={`${project.title} topics`}>{project.tags.map(tag => <li key={tag}>{tag}</li>)}</ul>
-      <div className="card-actions">{project.link ? <a href={project.link} target="_blank" rel="noreferrer">View code ↗</a> : <span>No public link</span>}
-        <div><button type="button" aria-label={`Edit ${project.title}`} onClick={() => onEdit(project)}>Edit</button>
-          <button type="button" aria-label={`Delete ${project.title}`} onClick={() => onDelete(project)}>Delete</button>
+      <div className="card-actions">{project.link ? <a href={project.link} target="_blank" rel="noreferrer">View code ↗</a> : <span>{project.tags[0]}</span>}
+        <div>{API_ENABLED && <><button type="button" aria-label={`Edit ${project.title}`} onClick={() => onEdit(project)}>Edit</button>
+          <button type="button" aria-label={`Delete ${project.title}`} onClick={() => onDelete(project)}>Delete</button></>}
           <button type="button" className={saved ? 'saved' : ''} aria-pressed={saved} aria-label={`${saved ? 'Unsave' : 'Save'} ${project.title}`} onClick={() => onToggleSave(project.id)}>{saved ? '★ Saved' : '☆ Save'}</button></div>
       </div>
     </div>
@@ -120,13 +123,15 @@ function App() {
   const visibleProjects = projects.filter(project => [project.title, project.category, project.description, ...project.tags].join(' ').toLowerCase().includes(query.trim().toLowerCase()) && (!showSaved || savedIds.includes(project.id)))
   return <>
     <a className="skip-link" href="#main">Skip to content</a>
-    <header className="site-header"><a className="wordmark" href="#main" aria-label="Neil home">neil<span>.</span></a><nav aria-label="Main navigation"><a href="#about">About</a><a href="#projects">Projects</a><a href="#contact">Contact ↗</a></nav></header>
+    <header className="site-header"><a className="wordmark" href="#main" aria-label="Neil home">neil<span>.</span></a><nav aria-label="Main navigation"><a href="#about">About</a><a href="#experience">Experience</a><a href="#projects">Projects</a><a href="#contact">Contact ↗</a></nav></header>
     <main id="main">
-      <section className="hero" aria-labelledby="intro-title"><p className="eyebrow"><span className="status-dot" /> COMPUTER SCIENCE @ UNIVERSITY OF MARYLAND</p><h1 id="intro-title">Hey, I'm Neil.<br /><span>I like building things.</span></h1><p className="hero-description">From competition robots to my first web apps, I enjoy figuring out how things work and making them better.</p><a className="primary-link" href="#projects">Explore my work ↓</a><div className="hero-footer"><span>Software · AI · Robotics</span><span>Always learning, always iterating.</span></div></section>
-      <section id="about" className="about-section" aria-labelledby="about-title"><div><p className="eyebrow">A LITTLE ABOUT ME</p><h2 id="about-title">Curiosity comes first.</h2></div><div><p>I'm a Computer Science student at UMD with a background in competitive robotics. I’m interested in software engineering, AI, and technology that helps people.</p><p>I love the process of building with a team: trying an idea, learning what went wrong, and coming back with something better.</p></div></section>
-      <section id="projects" className="projects-section" aria-labelledby="projects-title"><div className="section-heading"><div><p className="eyebrow">THINGS I'VE BEEN WORKING ON</p><h2 id="projects-title">Projects & experience<span>.</span></h2></div><span className="section-number">01 — {String(projects.length).padStart(2, '0')}</span></div>
+      <section className="hero" aria-labelledby="intro-title"><p className="eyebrow"><span className="status-dot" /> COMPUTER SCIENCE @ UNIVERSITY OF MARYLAND · CLASS OF 2028</p><h1 id="intro-title">Hey, I'm Neil.<br /><span>I build software and robots.</span></h1><p className="hero-description">From NASA research and robotic path planning to a World Championship–winning robot, I like figuring out how things work and making them better.</p><a className="primary-link" href="#projects">Explore my work ↓</a><div className="hero-footer"><span>Software · Robotics · Machine learning</span><span>Always learning, always iterating.</span></div></section>
+      <section id="about" className="about-section" aria-labelledby="about-title"><div><p className="eyebrow">A LITTLE ABOUT ME</p><h2 id="about-title">Curiosity comes first.</h2></div><div><p>I'm a Computer Science student at the University of Maryland, College Park (expected May 2028). This past summer I built a Python/RoboDK path planner for robotic spray coating at Zaic Design, and before that I researched UAV concepts at NASA Ames and hunted for exoplanets in NASA TESS data with machine learning.</p><p>I captained FTC Team Don’t Blink for six years, including a 2023 World Championship win. I love building with a team: trying an idea, learning what went wrong, and coming back with something better.</p></div></section>
+      <section id="experience" className="experience-section" aria-labelledby="experience-title"><p className="eyebrow">WHERE I'VE WORKED</p><h2 id="experience-title">Experience</h2>
+        <ol className="timeline">{experience.map(job => <li key={job.role + job.org}><div className="timeline-dates">{job.dates}</div><div><h3>{job.role}</h3><p className="timeline-org">{job.org}</p><ul>{job.points.map(point => <li key={point}>{point}</li>)}</ul></div></li>)}</ol></section>
+      <section id="projects" className="projects-section" aria-labelledby="projects-title"><div className="section-heading"><div><p className="eyebrow">THINGS I'VE BEEN WORKING ON</p><h2 id="projects-title">Projects<span>.</span></h2></div><span className="section-number">01 — {String(projects.length).padStart(2, '0')}</span></div>
         <div className="project-toolbar"><div className="filters" role="group" aria-label="Project filters"><button type="button" className={!showSaved ? 'active' : ''} aria-pressed={!showSaved} onClick={() => setShowSaved(false)}>All projects <span>{projects.length}</span></button><button type="button" className={showSaved ? 'active' : ''} aria-pressed={showSaved} onClick={() => setShowSaved(true)}>Saved <span>{savedIds.length}</span></button></div>
-          <div className="toolbar-right"><div className="search-field"><label className="sr-only" htmlFor="project-search">Search projects</label><span aria-hidden="true">⌕</span><input id="project-search" type="search" placeholder="Search projects…" value={query} onChange={event => setQuery(event.target.value)} /></div><button type="button" className="add-button" onClick={() => setFormMode('new')} disabled={!!loadError}>+ Add project</button></div></div>
+          <div className="toolbar-right"><div className="search-field"><label className="sr-only" htmlFor="project-search">Search projects</label><span aria-hidden="true">⌕</span><input id="project-search" type="search" placeholder="Search projects…" value={query} onChange={event => setQuery(event.target.value)} /></div>{API_ENABLED && <button type="button" className="add-button" onClick={() => setFormMode('new')} disabled={!!loadError}>+ Add project</button>}</div></div>
         {formMode && <ProjectForm key={formMode === 'new' ? 'new' : formMode.id} project={formMode === 'new' ? null : formMode} onSaved={handleSaved} onCancel={() => setFormMode(null)} />}
         {loading && <p className="load-message" role="status">Loading projects…</p>}
         {loadError && <div className="empty-state" role="alert"><h3>Projects are unavailable.</h3><p>{loadError}</p><button type="button" onClick={() => { setLoading(true); loadProjects() }}>Try again</button></div>}
@@ -135,7 +140,11 @@ function App() {
           {visibleProjects.length === 0 && <div className="empty-state"><h3>{showSaved && savedIds.length === 0 ? 'Your collection starts here.' : 'No matching projects.'}</h3><p>{showSaved && savedIds.length === 0 ? 'Use the Save button on a project to keep it in this view.' : 'Try another search or reset the filters.'}</p><button type="button" onClick={() => { setQuery(''); setShowSaved(false) }}>Show all projects</button></div>}
         </>}
       </section>
-      <section id="contact" className="contact-section" aria-labelledby="contact-title"><p className="eyebrow">LET'S CONNECT</p><h2 id="contact-title">Have something in mind?</h2><p>I'm always up for talking about code, robots, or a new idea.</p><a className="primary-link" href="https://github.com/neilm1642" target="_blank" rel="noreferrer">Find me on GitHub ↗</a></section>
+      <section className="details-section" aria-label="Honors and skills">
+        <div><p className="eyebrow">HONORS & PUBLICATIONS</p><ul className="honors">{honors.map(honor => <li key={honor}>{honor}</li>)}</ul></div>
+        <div><p className="eyebrow">TECHNICAL SKILLS</p><dl className="skills">{skills.map(group => <div key={group.label}><dt>{group.label}</dt><dd><ul className="tags">{group.items.map(item => <li key={item}>{item}</li>)}</ul></dd></div>)}</dl></div>
+      </section>
+      <section id="contact" className="contact-section" aria-labelledby="contact-title"><p className="eyebrow">LET'S CONNECT</p><h2 id="contact-title">Have something in mind?</h2><p>I'm looking for software and robotics internships, and always up for talking about code, robots, or a new idea.</p><div className="contact-links"><a className="primary-link" href={`mailto:${contact.email}`}>Email me ↗</a><a className="secondary-link" href={contact.github} target="_blank" rel="noreferrer">GitHub ↗</a></div></section>
     </main>
     <footer className="site-footer"><a className="wordmark" href="#main">neil<span>.</span></a><span>Built with React. Made to keep growing.</span><a href="#main">Back to top ↑</a></footer>
   </>

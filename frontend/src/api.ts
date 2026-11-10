@@ -1,5 +1,11 @@
+import { projects as staticProjects } from './resume'
+
 // Functions for talking to the FastAPI backend in /backend.
 const API_URL = 'http://127.0.0.1:8000'
+
+// The published site (e.g. on Netlify) has no backend, so it shows the static data in resume.ts
+// and hides the add/edit/delete controls. Running `bun run dev` locally uses the API as before.
+export const API_ENABLED = import.meta.env.DEV
 
 export type Project = { id: number; title: string; category: string; description: string; tags: string[]; link: string | null }
 export type ProjectInput = Omit<Project, 'id'>
@@ -27,7 +33,8 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
 }
 
 // GET /projects
-export function getProjects() {
+export async function getProjects() {
+  if (!API_ENABLED) return staticProjects
   return request<Project[]>('/projects')
 }
 
