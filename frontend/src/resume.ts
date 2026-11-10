@@ -4,6 +4,7 @@ import type { Project } from './api'
 export const contact = {
   email: 'neilm1642@gmail.com',
   github: 'https://github.com/neilm1642',
+  linkedin: 'https://www.linkedin.com/in/neil-mittal',
 }
 
 export const experience = [
