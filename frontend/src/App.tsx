@@ -12,6 +12,7 @@ const cardStyles: Record<string, { symbol: string; color: string }> = {
   'Computer science': { symbol: '{ }', color: 'sage' },
   'Machine learning': { symbol: '∿', color: 'sage' },
   Aerospace: { symbol: '✈', color: 'lavender' },
+  'Computer vision': { symbol: '◉', color: 'peach' },
 }
 const fallbackColors = ['lavender', 'peach', 'sage']
 function styleFor(project: Project) {
@@ -126,7 +127,7 @@ function App() {
     <header className="site-header"><a className="wordmark" href="#main" aria-label="Neil home">neil<span>.</span></a><nav aria-label="Main navigation"><a href="#about">About</a><a href="#experience">Experience</a><a href="#projects">Projects</a><a href="#contact">Contact ↗</a></nav></header>
     <main id="main">
       <section className="hero" aria-labelledby="intro-title"><p className="eyebrow"><span className="status-dot" /> COMPUTER SCIENCE @ UNIVERSITY OF MARYLAND · CLASS OF 2028</p><h1 id="intro-title">Hey, I'm Neil.<br /><span>I build software and robots.</span></h1><p className="hero-description">From NASA research and robotic path planning to a World Championship–winning robot, I like figuring out how things work and making them better.</p><a className="primary-link" href="#projects">Explore my work ↓</a><div className="hero-footer"><span>Software · Robotics · Machine learning</span><span>Always learning, always iterating.</span></div></section>
-      <section id="about" className="about-section" aria-labelledby="about-title"><div><p className="eyebrow">A LITTLE ABOUT ME</p><h2 id="about-title">Curiosity comes first.</h2></div><div><p>I'm a Computer Science student at the University of Maryland, College Park (expected May 2028). This past summer I built a Python/RoboDK path planner for robotic spray coating at Zaic Design, and before that I researched UAV concepts at NASA Ames and hunted for exoplanets in NASA TESS data with machine learning.</p><p>I captained FTC Team Don’t Blink for six years, including a 2023 World Championship win. I love building with a team: trying an idea, learning what went wrong, and coming back with something better.</p></div></section>
+      <section id="about" className="about-section" aria-labelledby="about-title"><div><p className="eyebrow">A LITTLE ABOUT ME</p><h2 id="about-title">Curiosity comes first.</h2></div><div><p>I'm a Computer Science student at the University of Maryland, College Park (expected May 2028). This past summer I built a Python/RoboDK path planner for robotic spray coating at Zaic Design, and before that I researched UAV concepts at NASA Ames and hunted for exoplanets in NASA TESS data with machine learning.</p><p>I captained FTC Team Don’t Blink for six years, including a 2023 World Championship win, and now work on computer vision with the Robotics @ Maryland Terraformers. I love building with a team: trying an idea, learning what went wrong, and coming back with something better.</p></div></section>
       <section id="experience" className="experience-section" aria-labelledby="experience-title"><p className="eyebrow">WHERE I'VE WORKED</p><h2 id="experience-title">Experience</h2>
         <ol className="timeline">{experience.map(job => <li key={job.role + job.org}><div className="timeline-dates">{job.dates}</div><div><h3>{job.role}</h3><p className="timeline-org">{job.org}</p><ul>{job.points.map(point => <li key={point}>{point}</li>)}</ul></div></li>)}</ol></section>
       <section id="projects" className="projects-section" aria-labelledby="projects-title"><div className="section-heading"><div><p className="eyebrow">THINGS I'VE BEEN WORKING ON</p><h2 id="projects-title">Projects<span>.</span></h2></div><span className="section-number">01 — {String(projects.length).padStart(2, '0')}</span></div>
@@ -141,7 +142,7 @@ function App() {
         </>}
       </section>
       <section className="details-section" aria-label="Honors and skills">
-        <div><p className="eyebrow">HONORS & PUBLICATIONS</p><ul className="honors">{honors.map(honor => <li key={honor}>{honor}</li>)}</ul></div>
+        <div><p className="eyebrow">HONORS & PUBLICATIONS</p><ul className="honors">{honors.map(honor => <li key={honor.text}>{honor.link ? <a href={honor.link} target="_blank" rel="noreferrer">{honor.text} ↗</a> : honor.text}</li>)}</ul></div>
         <div><p className="eyebrow">TECHNICAL SKILLS</p><dl className="skills">{skills.map(group => <div key={group.label}><dt>{group.label}</dt><dd><ul className="tags">{group.items.map(item => <li key={item}>{item}</li>)}</ul></dd></div>)}</dl></div>
       </section>
       <section id="contact" className="contact-section" aria-labelledby="contact-title"><p className="eyebrow">LET'S CONNECT</p><h2 id="contact-title">Have something in mind?</h2><p>I'm looking for software and robotics internships, and always up for talking about code, robots, or a new idea.</p><div className="contact-links"><a className="primary-link" href={`mailto:${contact.email}`}>Email me ↗</a><a className="secondary-link" href={contact.linkedin} target="_blank" rel="noreferrer">LinkedIn ↗</a><a className="secondary-link" href={contact.github} target="_blank" rel="noreferrer">GitHub ↗</a></div></section>

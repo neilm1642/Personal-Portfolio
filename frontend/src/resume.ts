@@ -1,4 +1,4 @@
-// Content from Neil's latest resume (Oct 2026). Edit this file to update the site.
+// Content from Neil's latest resume (Nov 2026). Edit this file to update the site.
 import type { Project } from './api'
 
 export const contact = {
@@ -53,22 +53,31 @@ export const experience = [
       'Practicing frontend development through project-based exercises and Git/GitHub workflows.',
     ],
   },
+  {
+    role: 'Computer Vision Team',
+    org: 'Robotics @ Maryland – Terraformers',
+    dates: '2026 – Present',
+    points: [
+      'Developing computer vision capabilities for autonomous robotics using Python, ROS 2, and image processing techniques.',
+      'Working on camera-based object detection and visual perception to support robotic navigation and decision-making.',
+    ],
+  },
 ]
 
-export const honors = [
-  'FIRST Tech Challenge World Championship Winner (2023)',
-  'Inspire Award 2nd, Ochoa Division, FTC World Championship (2025)',
-  'NJ State Champion, FIRST Tech Challenge (2023)',
-  'FTC Dean’s List Semi-Finalist (2025)',
-  'Publication: NASA Technical Reports Server (2024)',
-  'Publication: George Mason University TESS Mission Research Journal (2024)',
+export const honors: { text: string; link?: string }[] = [
+  { text: 'FIRST Tech Challenge World Championship Winner (2023)' },
+  { text: 'Inspire Award 2nd, Ochoa Division, FTC World Championship (2025)' },
+  { text: 'NJ State Champion, FIRST Tech Challenge (2023)' },
+  { text: 'FTC Dean’s List Semi-Finalist (2025)' },
+  { text: 'Publication: NASA Technical Reports Server (2024)', link: 'https://ntrs.nasa.gov/citations/20240011386' },
+  { text: 'Publication: GMU TESS Research (2024)', link: 'https://drive.google.com/file/d/1LPJ1EOWeLtMFtGmRdwMP58B4d6I4_S3M/view?usp=sharing' },
 ]
 
 export const skills: { label: string; items: string[] }[] = [
-  { label: 'Languages', items: ['Java', 'Python', 'JavaScript', 'TypeScript', 'HTML/CSS'] },
+  { label: 'Languages', items: ['Java', 'Python', 'JavaScript', 'TypeScript', 'SQL', 'HTML/CSS'] },
   { label: 'Frameworks', items: ['React', 'Next.js', 'Node.js', 'Tailwind CSS'] },
-  { label: 'Tools', items: ['Git', 'GitHub', 'RoboDK', 'Arduino'] },
-  { label: 'Other', items: ['Machine Learning', 'PLC I/O', 'CAD (Onshape)', 'Sensor Integration'] },
+  { label: 'Tools', items: ['Git', 'GitHub', 'RoboDK', 'Arduino', 'Docker', 'Unix', 'Linux', 'ROS', 'Jira', 'Slack'] },
+  { label: 'Other', items: ['Machine Learning', 'Data Structures', 'Gameplay', 'REST APIs', 'PostgreSQL', 'NoSQL', 'PLC I/O', 'CAD (Onshape)', 'Sensor Integration'] },
 ]
 
 // Used by the published (static) site, where the FastAPI backend isn't running.
@@ -111,6 +120,14 @@ export const projects: Project[] = [
     category: 'Robotics',
     description: 'Captained a 16-member team to the 2023 FTC World Championship, writing Java autonomous and tele-op routines and tuning drivetrain control and sensor integration.',
     tags: ['Java', 'Control', 'Sensors', 'Leadership'],
+    link: null,
+  },
+  {
+    id: 7,
+    title: 'Terraformers Computer Vision',
+    category: 'Computer vision',
+    description: 'With Robotics @ Maryland: building camera-based object detection and visual perception in Python and ROS 2 to support autonomous robot navigation and decision-making.',
+    tags: ['Python', 'ROS 2', 'Computer Vision'],
     link: null,
   },
   {
